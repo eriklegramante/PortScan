@@ -63,7 +63,7 @@ while True:
 
         results = []
         with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
-            futures = [executor.submit(get_ip_info, ip, port) for port in range(1, 6000)]
+            futures = [executor.submit(get_ip_info, ip, port) for port in range(1, 9000)]
             for future in concurrent.futures.as_completed(futures):
                 port, status = future.result()
                 if status:
