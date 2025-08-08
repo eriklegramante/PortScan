@@ -97,4 +97,4 @@ while True:
         separator()
         print("Exiting...")
         break
-#scanme.nmap.org <---- domain test
+#scanme.nmap.org <---- domain test 
