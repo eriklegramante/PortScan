@@ -4,9 +4,9 @@ import sys
 import time
 from colorama import Fore, Style
 import concurrent.futures
+from verify import display_port_services
 
 pyfiglet.print_figlet('PortScan.py') 
-
 
 def loading_animation(duration=3.5): #animação de carregamento
     chars = ["-", "\\", "|", "/"]
@@ -37,7 +37,7 @@ def separator(): #organizar console
 while True: 
     try:
         separator()
-        choose = int(input("[1] - Specific port\n[2] - Test all ports(6000)\n[3] - Choose ports\n[4] - Exit\nOption: "))
+        choose = int(input("[1] - Specific port\n[2] - Test all ports(6000)\n[3] - Choose ports\n[4] - Available Port Services\n[5] - Exit\nOption: "))
     except ValueError:
         separator()
         print(f"{Fore.RED}It looks like you typed something wrong... have you tried using numbers?{Style.RESET_ALL}")
@@ -63,7 +63,7 @@ while True:
 
         results = []
         with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
-            futures = [executor.submit(get_ip_info, ip, port) for port in range(1, 9000)]
+            futures = [executor.submit(get_ip_info, ip, port) for port in range(1, 65536)]
             for future in concurrent.futures.as_completed(futures):
                 port, status = future.result()
                 if status:
@@ -92,9 +92,14 @@ while True:
                 print(f"{Fore.GREEN}[OPEN]{Style.RESET_ALL} Port {port}")
             else:
                 print(f"{Fore.RED}[CLOSED]{Style.RESET_ALL} Port {port}")
-
+                
     elif choose == 4:
+        separator()
+        display_port_services()
+
+    elif choose == 5:
         separator()
         print("Exiting...")
         break
+
 #scanme.nmap.org <---- domain test 
