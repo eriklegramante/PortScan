@@ -13,5 +13,3 @@ def print_port_status(port, status):
         print(f"{Fore.GREEN}[OPEN]{Style.RESET_ALL} Port {port} - {service}")
     else:
         print(f"{Fore.RED}[CLOSED]{Style.RESET_ALL} Port {port} - {service}")
-
-display_port_services()
