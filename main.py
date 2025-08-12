@@ -4,7 +4,8 @@ import sys
 import time
 from colorama import Fore, Style
 import concurrent.futures
-from verify import display_port_services
+from verify import display_port_services, print_port_status
+# PortScan.py - A simple port scanner with various functionalities
 
 pyfiglet.print_figlet('PortScan.py') 
 
@@ -34,10 +35,10 @@ def get_ip_info(ip, port):
 def separator(): #organizar console
     print("\n" + "-" * 50 + "\n")
 
-while True: 
+while True:
     try:
         separator()
-        choose = int(input("[1] - Specific port\n[2] - Test all ports(6000)\n[3] - Choose ports\n[4] - Available Port Services\n[5] - Exit\nOption: "))
+        choose = int(input("[1] - Specific port\n[2] - Test all ports (1-65535)\n[3] - Choose ports\n[4] - Available Port Services\n[5] - Exit\nOption: "))
     except ValueError:
         separator()
         print(f"{Fore.RED}It looks like you typed something wrong... have you tried using numbers?{Style.RESET_ALL}")
@@ -49,11 +50,8 @@ while True:
         port = int(input("[PORT]: "))
         _, status = get_ip_info(ip, port)
         separator()
-        if status:
-            print(f"{Fore.GREEN}[OPEN]{Style.RESET_ALL} Port {port}")
-        else:
-            print(f"{Fore.RED}[CLOSED]{Style.RESET_ALL} Port {port}")
-        
+        print_port_status(port, status)
+
     elif choose == 2:
         separator()
         ip = input("[IP]: ")
@@ -66,11 +64,9 @@ while True:
             futures = [executor.submit(get_ip_info, ip, port) for port in range(1, 65536)]
             for future in concurrent.futures.as_completed(futures):
                 port, status = future.result()
+                print_port_status(port, status)
                 if status:
                     results.append(port)
-                    print(f"{Fore.GREEN}[OPEN]{Style.RESET_ALL} Port {port}")
-                else:
-                    print(f"{Fore.RED}[CLOSED]{Style.RESET_ALL} Port {port}")
 
         separator()
         print(f"Scan finished in {time.time() - start_time:.2f} seconds.")
@@ -78,7 +74,7 @@ while True:
             print(f"Open ports: {', '.join(map(str, results))}")
         else:
             print("No open ports found.")
-    
+
     elif choose == 3:
         separator()
         ip = input("[IP]: ")
@@ -88,11 +84,8 @@ while True:
         separator()
         for port in ports:
             _, status = get_ip_info(ip, port)
-            if status:
-                print(f"{Fore.GREEN}[OPEN]{Style.RESET_ALL} Port {port}")
-            else:
-                print(f"{Fore.RED}[CLOSED]{Style.RESET_ALL} Port {port}")
-                
+            print_port_status(port, status)
+
     elif choose == 4:
         separator()
         display_port_services()
