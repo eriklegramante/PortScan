@@ -56,7 +56,7 @@ O projeto foi estruturado em módulos para facilitar manutenção e expansão.
 
 ### 1️⃣ Clonar o repositório
 ```bash
-git clone https://github.com/seuusuario/portscan.git
+git clone https://github.com/eriklegramante/portscan.git
 cd portscan
 ```
 
